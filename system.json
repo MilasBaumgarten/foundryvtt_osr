@@ -1,0 +1,53 @@
+{
+    "id": "osr",
+    "title": "Outcast Silver Raiders",
+    "url": "https://github.com/MilasBaumgarten/foundryvtt_osr/",
+    "license": "LICENSE.md",
+    "description": "An implementation of the Outcast Silver Raiders system.",
+    "version": "0.0.1",
+    "compatibility": {
+      "minimum": 12,
+      "verified": 12
+    },
+    "authors": [{
+      "name": "Milas Baumgarten",
+      "email": "milasbaumgarten@gmail.com",
+      "discord": "gwydiondesert"
+    }],
+    "esmodules": ["osr.mjs"],
+    "styles": ["styles/system-styles.css"],
+    "packs": [{
+      "name": "monsters",
+      "label": "My Monsters",
+      "type": "Actor"
+    },
+    {
+      "name": "items",
+      "label": "My Items",
+      "type": "Item"
+    }],
+    "languages": [{
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    }],
+    "documentTypes": {
+      "Actor": {
+        "hero": { "htmlFields": ["background.biography", "class_features"] },
+        "npc": { "htmlFields": ["features", "notes"] }
+      },
+      "Item": {
+        "weapon": {},
+        "spell": {},
+        "generic": {}
+      }
+    },
+    "socket": false,
+    "initiative": "1d10",
+    "grid": {
+      "distance": 5,
+      "units": "ft"
+    },
+    "primaryTokenAttribute": "resources.health",
+    "manifest": "https://raw.githubusercontent.com/MilasBaumgarten/foundryvtt_osr/refs/heads/main/system.json"
+  }

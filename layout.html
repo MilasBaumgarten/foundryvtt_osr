@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OSR Character Sheet</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.5;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            background: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .section h2 {
+            margin-bottom: 10px;
+            font-size: 1.5em;
+            border-bottom: 2px solid #ccc;
+            padding-bottom: 5px;
+        }
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 15px;
+        }
+        .grid .field {
+            display: flex;
+            flex-direction: column;
+        }
+        .grid .field label {
+            font-weight: bold;
+        }
+        .grid .field input, .grid .field textarea {
+            padding: 5px;
+            font-size: 1em;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+        .grid .field textarea {
+            resize: vertical;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 10px;
+        }
+        table th, table td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+        table th {
+            background: #f0f0f0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="section">
+            <h2>OSR Character Sheet</h2>
+            <div class="grid">
+                <div class="field">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name">
+                </div>
+                <div class="field">
+                    <label for="level">Level</label>
+                    <input type="text" id="level" name="level">
+                </div>
+                <div class="field">
+                    <label for="class">Class</label>
+                    <input type="text" id="class" name="class">
+                </div>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Ability Scores</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Ability</th>
+                        <th>Score</th>
+                        <th>Modifier</th>
+                        <th>Save</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td>CHA</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+                    <tr><td>CON</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+                    <tr><td>DEX</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+                    <tr><td>INT</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+                    <tr><td>STR</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+                    <tr><td>WIS</td><td><input type="text"></td><td><input type="text"></td><td><input type="text"></td></tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="section">
+            <h2>Skills</h2>
+            <div class="grid">
+                <div class="field">
+                    <label for="arcana">Arcana</label>
+                    <input type="text" id="arcana">
+                </div>
+                <div class="field">
+                    <label for="climbing">Climbing</label>
+                    <input type="text" id="climbing">
+                </div>
+                <div class="field">
+                    <label for="first-aid">First Aid</label>
+                    <input type="text" id="first-aid">
+                </div>
+                <div class="field">
+                    <label for="literacy">Literacy</label>
+                    <input type="text" id="literacy">
+                </div>
+                <!-- Add additional skills here -->
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Combat</h2>
+            <div class="grid">
+                <div class="field">
+                    <label for="initiative">Initiative</label>
+                    <input type="text" id="initiative">
+                </div>
+                <div class="field">
+                    <label for="armor-class">Armor Class</label>
+                    <input type="text" id="armor-class">
+                </div>
+                <div class="field">
+                    <label for="hit-points">Hit Points</label>
+                    <input type="text" id="hit-points">
+                </div>
+                <!-- Add additional combat fields here -->
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>Equipment</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>Item</th>
+                        <th>Scarcity Die</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td><input type="text"></td><td><input type="text"></td></tr>
+                    <tr><td><input type="text"></td><td><input type="text"></td></tr>
+                    <!-- Add additional equipment rows here -->
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+</body>
+</html>

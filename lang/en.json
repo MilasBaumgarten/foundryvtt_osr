@@ -1,0 +1,47 @@
+{
+    "OSR":{
+        "Ability":{
+            "Cha":{
+                "long": "Charisma",
+                "short": "Cha"
+            },
+            "Con":{
+                "long": "Constitution",
+                "short": "Con"
+            },
+            "Dex":{
+                "long": "Dexterity",
+                "short": "Dex"
+            },
+            "Int":{
+                "long": "Intelligence",
+                "short": "Int"
+            },
+            "Str":{
+                "long": "Strength",
+                "short": "Str"
+            },
+            "Wis":{
+                "long": "Wisdom",
+                "short": "Wis"
+            }
+        },
+        "Skill":{
+            "Arcana": "Arcana",
+            "Climbing": "Climbing",
+            "FirstAid": "First Aid",
+            "Literacy": "Literacy",
+            "Seamanship": "Seamanship",
+            "Search": "Search",
+            "SleightOfHand": "Sleight of Hand",
+            "Stealth": "Stealth",
+            "Survival": "Survival",
+            "Tinkering": "Tinkering"
+        },
+        "Classes":{
+            "Rogue": "The Rogue",
+            "Sorcerer": "The Sorcerer",
+            "Warrior": "The Warrior"
+        }
+    }
+}
