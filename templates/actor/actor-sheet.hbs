@@ -58,7 +58,8 @@
                 {{!-- Class Features --}}
                 <div>
                     <h2>Class Features</h2>
-                    {{editor enrichedBiography target="system.class_features" engine="prosemirror" button=true editable=editable}}
+                    {{!-- Editors must receive enriched text data from getData to properly handle rolls --}}
+                    {{editor system.classFeatures target="system.classFeatures" editable=false}}
                 </div>
             </section>
 
@@ -69,26 +70,31 @@
                     <div><b>Armor Class</b></div>
                     <div><b>Hit Points</b></div>
                     <div class="grid-span-3 align-center"><b>Attack Bonus</b></div>
+                    
                     <div>
-                        <div>1d10 +</div>
-                        <div>__</div>
+                        <div><span class="initiative rollable" data-roll="d20+@combat.initiative.mod" data-label="initiative" data-type="initiative">1d10 + <br>{{numberFormat system.combat.initiative.mod decimals=0}}</span></div>
                     </div>
-                    <div>__</div>
+                    <div>{{numberFormat system.combat.armorClass.value}}</div>
                     <div>
                         <div>Total <input type="text" name="system.resources.health.max" value="{{system.resources.health.max}}" data-dtype="Number"/></div>
                         <div>Current <input type="text" name="system.resources.health.value" value="{{system.resources.health.value}}" data-dtype="Number"/></div>
                     </div>
-                    <div>Base __</div>
-                    <div>Melee __</div>
-                    <div>Ranged __</div>
+                    <div>Base
+                        {{numberFormat system.combat.attack.bab decimals=0 sign=true}}
+                    </div>
+                    <div>Melee:
+                        <span class="attack rollable" data-roll="d20+@combat.attack.melee" data-label="melee attack" data-type="attack">{{numberFormat system.combat.attack.melee decimals=0 sign=true}}</span>
+                    </div>
+                    <div>Ranged: 
+                        <span class="attack rollable" data-roll="d20+@combat.attack.ranged" data-label="ranged attack" data-type="attack">{{numberFormat system.combat.attack.ranged decimals=0 sign=true}}</span>
+                    </div>
                 </div> 
             </div>
         </div>
 
         {{!-- Biography Tab --}}
         <div class="tab biography" data-group="primary" data-tab="description">
-            {{!-- Editors must receive enriched text data from getData to properly handle rolls --}}
-            {{editor enrichedBiography target="system.background.biography" engine="prosemirror" button=true editable=editable}}
+            {{editor system.background.biography target="system.background.biography" engine="prosemirror" button=true editable=editable}}
         </div>
 
         {{!-- Items Tab --}}

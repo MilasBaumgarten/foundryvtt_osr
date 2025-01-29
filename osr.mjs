@@ -35,7 +35,7 @@ Hooks.once("init", () => {
   CONFIG.Actor.trackableAttributes = {
     hero: {
       bar: ["resources.health"],
-      value: ["resources.armor_class"]
+      value: ["resources.armorClass"]
     }
   };
 });

@@ -162,30 +162,116 @@ export class PlayerActorSheet extends ActorSheet {
     }
 
     __onSelectClass() {
+        // Dialog to select class and skill improvements
         new Dialog({
             title: 'Class Selection',
-            content: `Please select your prefered class.`,
+            content: `
+            <form class="flexcol">
+                <div class="form-group">
+                    <label for="classSelection">Class</label>
+                    <select name="classSelection">
+                        <option value="rogue">The Rogue</option>
+                        <option value="sorcerer">The Sorcerer</option>
+                        <option value="warrior">The Warrior</option>
+                    </select>
+                </div>
+                <div>
+                    <div>
+                        Either select 2 skills that will get +1 or roll to 
+                        improve one random skill by +1 and another by +2. If
+                        both skills are the same, the corresponding skill gets 
+                        improved by +3.
+                    </div>
+
+                    <div class="form-group">
+                        <select name="skillSelection1">
+                            <option value="random">Random</option>
+                            <option value="arcana">Arcana</option>
+                            <option value="climbing">Climbing</option>
+                            <option value="firstAid">First Aid</option>
+                            <option value="literacy">Literacy</option>
+                            <option value="seamanship">Seamanship</option>
+                            <option value="search">Search</option>
+                            <option value="sleightOfHand">Sleight of Hand</option>
+                            <option value="stealth">Stealth</option>
+                            <option value="survival">Survival</option>
+                            <option value="tinkering">Tinkering</option>
+                        </select>
+
+                        <select name="skillSelection2">
+                            <option value=""></option>
+                            <option value="arcana">Arcana</option>
+                            <option value="climbing">Climbing</option>
+                            <option value="firstAid">First Aid</option>
+                            <option value="literacy">Literacy</option>
+                            <option value="seamanship">Seamanship</option>
+                            <option value="search">Search</option>
+                            <option value="sleightOfHand">Sleight of Hand</option>
+                            <option value="stealth">Stealth</option>
+                            <option value="survival">Survival</option>
+                            <option value="tinkering">Tinkering</option>
+                        </select>
+                    </div>
+                </div>
+            </form>
+            `,
             buttons: {
-              rogue: {
-                label: 'The Rogue',
-                callback: () => this.__selectedClass("rogue")
-              },
-              sorcerer: {
-                label: 'The Sorcerer',
-                callback: () => this.__selectedClass("sorcerer")
-              },
-              warrior: {
-                label: 'The Warrior',
-                callback: () => this.__selectedClass("warrior")
-              }
-            }
-        }).render(true);
+                no: {
+                    icon: '<i class="fas fa-times"></i>',
+                    label: 'Cancel'
+                },
+                yes: {
+                    icon: '<i class="fas fa-check"></i>',
+                    label: 'Confirm',
+                    callback: (html) => {
+                        let characterClass = html.find('[name="classSelection"]').val();
+                        let skillImprovement1 = html.find('[name="skillSelection1"]').val();
+                        let skillImprovement2 = html.find('[name="skillSelection2"]').val();
+
+                        this.__selectClass(characterClass);
+                        this.__selectSkillImprovements(skillImprovement1, skillImprovement2);
+                    }
+                },
+            },
+            default: 'yes'
+        }).render(true)
+
+        // TODO: implement skill choice for rogue
     }
 
-    __selectedClass(className) {
+    __selectClass(className) {
         this.actor.update({
-            "system.class.value": className
+            "system.class.value": className,
+            "system.level": 1
         });
+    }
+
+    __selectSkillImprovements(improvement1, improvement2) {
+        let updateData = {};
+
+        // set every skill mod to 0
+        for (let skill in this.actor.system.skills) {
+            updateData[`system.skills.${skill}.mod`] = 0;
+        }
+
+        if (improvement1 == 'random') {
+            // get skill amount
+            let skills = Object.keys(this.actor.system.skills);
+            let skillAmount = skills.length;
+
+            // get a random skill and improve it by +1
+            let randomSkillIndex = Math.floor(Math.random() * skillAmount);
+            updateData[`system.skills.${skills[randomSkillIndex]}.mod`] += 1;
+
+            // get another random skill and improve it by +2
+            randomSkillIndex = Math.floor(Math.random() * skillAmount);
+            updateData[`system.skills.${skills[randomSkillIndex]}.mod`] += 2;
+        } else {
+            updateData[`system.skills.${improvement1}.mod`] += 1;
+            updateData[`system.skills.${improvement2}.mod`] += 1;
+        }
+
+        this.actor.update(updateData);
     }
 
     /**
@@ -206,12 +292,21 @@ export class PlayerActorSheet extends ActorSheet {
 
             if (dataset.type) {
                 if (dataset.type == 'check') {
+                    // TODO: display a popup with the ability to select modifiers before roll
+                    // TODO: add option for impossible to fail/ succeed roll (2d6)
+                        // impossible to fail: 2x 1 = fail
+                        // impossible to succeed: 2x 6 = success
                     success = roll.total >= 6;
                 }
                 else if (dataset.type == 'save') {
                     success = roll.total >= 10;
                 }
+                else if (dataset.type == 'attack') {
+                    // TODO: display a popup with the ability to select modifiers before roll
+                }
             }
+
+            // TODO: color message based on success
 
             ChatMessage.create({
                 speaker: ChatMessage.getSpeaker({ actor: this.actor }),

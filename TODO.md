@@ -1,13 +1,13 @@
 # TODO
 - Player Sheet
+    - skill checks should open a popup to select relevant modifiers
+        - ability
+        - skill (otional)
+        - additional mods
+    - class feature text
+        - sorcerer
+        - warrior
     - rolls with success/ failure feedback
-    - initiative
-    - AC
-    - attack boni
-    - class selection
-        - get saves from class
-        - get skill modifiers from class
-        - get features from class
     - weapon entries
     - armor entries
     - equipment slots
@@ -15,9 +15,12 @@
     - improved description (Notes, Maps & Miscellanea)
     - combat action info
     - fancy style
+    - XP
+    - level up
 - NPC Sheet
     - everything
 - 1 button character creation
 - most likely remove all references to items
 - clean up css
 - class advancements
+- when clicking on class again, warn that this will reset the player

@@ -33,7 +33,7 @@
     }],
     "documentTypes": {
       "Actor": {
-        "hero": { "htmlFields": ["background.biography", "class_features"] },
+        "hero": { "htmlFields": ["background.biography", "classFeatures"] },
         "npc": { "htmlFields": ["features", "notes"] }
       },
       "Item": {
