@@ -175,6 +175,46 @@ export class PlayerActorSheet extends ActorSheet {
                         <option value="warrior">The Warrior</option>
                     </select>
                 </div>
+            </form>
+            `,
+            buttons: {
+                no: {
+                    icon: '<i class="fas fa-times"></i>',
+                    label: 'Cancel'
+                },
+                yes: {
+                    icon: '<i class="fas fa-check"></i>',
+                    label: 'Confirm',
+                    callback: (html) => {
+                        let characterClass = html.find('[name="classSelection"]').val();
+
+                        this.__selectClass(characterClass);
+
+                        if (characterClass == 'rogue') {
+                            this.__onSelectRogueSkills();
+                        } else {
+                            this.__onSelectTwoSkills();
+                        }
+                    }
+                },
+            },
+            default: 'yes'
+        }).render(true)
+    }
+
+    __selectClass(className) {
+        this.actor.update({
+            "system.class.value": className,
+            "system.level": 1
+        });
+    }
+
+    __onSelectTwoSkills() {
+        // Dialog to select class and skill improvements
+        new Dialog({
+            title: 'Skill Selection',
+            content: `
+            <form class="flexcol">
                 <div>
                     <div>
                         Either select 2 skills that will get +1 or roll to 
@@ -185,7 +225,6 @@ export class PlayerActorSheet extends ActorSheet {
 
                     <div class="form-group">
                         <select name="skillSelection1">
-                            <option value="random">Random</option>
                             <option value="arcana">Arcana</option>
                             <option value="climbing">Climbing</option>
                             <option value="firstAid">First Aid</option>
@@ -199,7 +238,6 @@ export class PlayerActorSheet extends ActorSheet {
                         </select>
 
                         <select name="skillSelection2">
-                            <option value=""></option>
                             <option value="arcana">Arcana</option>
                             <option value="climbing">Climbing</option>
                             <option value="firstAid">First Aid</option>
@@ -216,34 +254,26 @@ export class PlayerActorSheet extends ActorSheet {
             </form>
             `,
             buttons: {
-                no: {
-                    icon: '<i class="fas fa-times"></i>',
-                    label: 'Cancel'
+                random: {
+                    icon: '<i class="fas fa-check"></i>',
+                    label: 'Random',
+                    callback: (html) => {
+                        this.__selectSkillImprovements("random", "random");
+                    }
                 },
-                yes: {
+                confirm: {
                     icon: '<i class="fas fa-check"></i>',
                     label: 'Confirm',
                     callback: (html) => {
-                        let characterClass = html.find('[name="classSelection"]').val();
                         let skillImprovement1 = html.find('[name="skillSelection1"]').val();
                         let skillImprovement2 = html.find('[name="skillSelection2"]').val();
 
-                        this.__selectClass(characterClass);
                         this.__selectSkillImprovements(skillImprovement1, skillImprovement2);
                     }
                 },
             },
             default: 'yes'
         }).render(true)
-
-        // TODO: implement skill choice for rogue
-    }
-
-    __selectClass(className) {
-        this.actor.update({
-            "system.class.value": className,
-            "system.level": 1
-        });
     }
 
     __selectSkillImprovements(improvement1, improvement2) {
@@ -269,6 +299,147 @@ export class PlayerActorSheet extends ActorSheet {
         } else {
             updateData[`system.skills.${improvement1}.mod`] += 1;
             updateData[`system.skills.${improvement2}.mod`] += 1;
+        }
+
+        this.actor.update(updateData);
+    }
+
+    __onSelectRogueSkills() {
+        // Dialog to select class and skill improvements
+        new Dialog({
+            title: 'Skill Selection',
+            content: `
+            <form class="flexcol">
+                <div>
+                    <div>
+                        You may allocate 6 points to any skills you wish. Increasing
+                        a skill costs a number of points equal to its new total.
+                    </div>
+
+                    <div class="skills-list">
+                        <div class="skill-row">
+                            <span class="skill-name" id="arcana">Arcana</span>
+                            <button class="minus-btn">-</button>
+                            <span class="skill-value">0</span>
+                            <button class="plus-btn">+</button>
+                        </div>
+                        <div class="skill-row">
+                            <span class="skill-name" id="climbing">Climbing</span>
+                            <button class="minus-btn">-</button>
+                            <span class="skill-value">0</span>
+                            <button class="plus-btn">+</button>
+                        </div>
+                        <div class="skill-row">
+                            <span class="skill-name" id="firstAid">First Aid</span>
+                            <button class="minus-btn">-</button>
+                            <span class="skill-value">0</span>
+                            <button class="plus-btn">+</button>
+                        </div>
+                        <div class="skill-row">
+                            <span class="skill-name" id="literacy">Literacy</span>
+                            <button class="minus-btn">-</button>
+                            <span class="skill-value">0</span>
+                            <button class="plus-btn">+</button>
+                        </div>
+                        <div class="skill-row">
+                            <span class="skill-name" id="seamanship">Seamanship</span>
+                            <button class="minus-btn">-</button>
+                            <span class="skill-value">0</span>
+                            <button class="plus-btn">+</button>
+                        </div>
+                        <div class="skill-row">
+                            <span class="skill-name" id="search">Search</span>
+                            <button class="minus-btn">-</button>
+                            <span class="skill-value">0</span>
+                            <button class="plus-btn">+</button>
+                        </div>
+                        <div class="skill-row">
+                            <span class="skill-name" id="sleightOfHand">Sleight of Hand</span>
+                            <button class="minus-btn">-</button>
+                            <span class="skill-value">0</span>
+                            <button class="plus-btn">+</button>
+                        </div>
+                        <div class="skill-row">
+                            <span class="skill-name" id="stealth">Stealth</span>
+                            <button class="minus-btn">-</button>
+                            <span class="skill-value">0</span>
+                            <button class="plus-btn">+</button>
+                        </div>
+                        <div class="skill-row">
+                            <span class="skill-name" id="survival">Survival</span>
+                            <button class="minus-btn">-</button>
+                            <span class="skill-value">0</span>
+                            <button class="plus-btn">+</button>
+                        </div>
+                        <div class="skill-row">
+                            <span class="skill-name" id="tinkering">Tinkering</span>
+                            <button class="minus-btn">-</button>
+                            <span class="skill-value">0</span>
+                            <button class="plus-btn">+</button>
+                        </div>
+                    </div>
+                </div>
+            </form>
+            `,
+            buttons: {
+                confirm: {
+                    icon: '<i class="fas fa-check"></i>',
+                    label: 'Confirm',
+                    callback: (html) => {
+                        // get the improved skills
+                        let skillUpdates = {};
+                        html.find('.skill-row').each((index, row) => {
+                            const skillName = $(row).find('.skill-name').attr('id');
+                            const skillValue = parseInt($(row).find('.skill-value').text().trim());
+                            if (skillValue > 0) {
+                                skillUpdates[skillName] = skillValue;
+                            }
+                        });
+
+                        this.__updateSkills(skillUpdates);
+                    }
+                },
+            },
+            default: 'yes',
+            render: html => {
+                let remainingPoints = 6;
+        
+                html.find('.plus-btn').click(ev => {
+                    const skillValueElem = $(ev.currentTarget).siblings('.skill-value');
+                    let skillValue = parseInt(skillValueElem.text());
+        
+                    if (remainingPoints >= skillValue + 1 && skillValue < 3) {
+                        skillValue++;
+                        remainingPoints -= skillValue;
+                        skillValueElem.text(skillValue);
+                    }
+                });
+        
+                html.find('.minus-btn').click(ev => {
+                    const skillValueElem = $(ev.currentTarget).siblings('.skill-value');
+                    let skillValue = parseInt(skillValueElem.text());
+        
+                    if (skillValue > 0) {
+                        remainingPoints += skillValue;
+                        skillValue--;
+                        skillValueElem.text(skillValue);
+                    }
+                });
+            }
+        }).render(true)
+    }
+
+    __updateSkills(skillUpdates) {
+        let updateData = {};
+
+        // set every skill mod to 0
+        for (let skill in this.actor.system.skills) {
+            updateData[`system.skills.${skill}.mod`] = 0;
+        }
+
+        for (let skill in skillUpdates) {
+            updateData[`system.skills.${skill}.mod`] = skillUpdates[skill];
+            updateData[`system.skills.${skill}.mod`] = skillUpdates[skill];
         }
 
         this.actor.update(updateData);

@@ -53,7 +53,10 @@ export class HeroDataModel extends ActorDataModel {
             }, {})),
             combat: new SchemaField({
                 armorClass: new SchemaField({
-                    value: new NumberField({ required: true, initial: 12 })
+                    base: new NumberField({ required: true, initial: 12 }),
+                    mod: new NumberField({ required: true, initial: 0 }),
+                    total: new NumberField({ required: true, initial: 0 })
+
                 }),
                 attack: new SchemaField({
                     bab: new NumberField({ required: true, initial: 0 }),
@@ -68,7 +71,38 @@ export class HeroDataModel extends ActorDataModel {
             classFeatures: new HTMLField({ required: true, blank: true }),
             background: new SchemaField({
                 biography: new HTMLField({ required: true, blank: true })
-            })
+            }),
+            equipment: new SchemaField({
+                armor: new SchemaField(Array.from({ length: 2 }, (_, i) => i + 1).reduce((obj, i) => {
+                    obj[`slot${i}`] = new SchemaField({
+                        name: new HTMLField({ required: true, blank: true }),
+                        modifier: new HTMLField({ required: true, blank: true }),
+                        notes: new HTMLField({ required: true, blank: true })
+                    });
+                    return obj;
+                }, {})),
+                weapons: new SchemaField(Array.from({ length: 4 }, (_, i) => i + 1).reduce((obj, i) => {
+                    obj[`slot${i}`] = new SchemaField({
+                        name: new HTMLField({ required: true, blank: true }),
+                        damage: new HTMLField({ required: true, blank: true }),
+                        notes: new HTMLField({ required: true, blank: true })
+                    });
+                    return obj;
+                }, {})),
+                items: new SchemaField(Array.from({ length: 21 }, (_, i) => i + 1).reduce((obj, i) => {
+                    obj[`slot${i}`] = new SchemaField({
+                        description: new HTMLField({ required: true, blank: true }),
+                        scarcityDie: new HTMLField({ required: true, blank: true })
+                    });
+                    return obj;
+                }, {})),
+                nonencumberingItems: new SchemaField({
+                    value: new HTMLField({ required: true, blank: true })
+                }),
+                treasure: new SchemaField({
+                    value: new HTMLField({ required: true, blank: true })
+                })
+            }),
         };
     }
 
@@ -125,8 +159,7 @@ export class HeroDataModel extends ActorDataModel {
         this.combat.attack.ranged = this.combat.attack.bab + this.abilities.dex.mod;
         this.combat.initiative.mod = this.abilities.dex.mod + this.combat.initiative.bonus;
 
-        // TODO: also use armor worn to calculate armor class.
-        this.combat.armorClass.value = 12 + this.abilities.dex.mod;
+        this.combat.armorClass.total = this.combat.armorClass.base + this.abilities.dex.mod + this.combat.armorClass.mod;
 
         // display class features
         if (classData){

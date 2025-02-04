@@ -48,38 +48,27 @@
             "Rogue": {
                 "SneakAttack": {
                     "title": "Sneak Attack",
-                    "description": "A Rogue attacking an unaware target adds twice their Stealth modifier to their first attack roll made against that target. On a successful hit, the damage of this attack is multiplied by 1 + the Rogue's level (after rolling damage and applying any modifiers)."
+                    "description": "When attacking unaware targets, add 2x Stealth modifier to the attack roll. On a successful hit, multiply the damage dealt by (level +1), after rolling damage and applying all modifiers."
                 },
                 "Luck": {
                     "title": "Rogue's Luck",
-                    "description": "A Rogue receives a pool of LUCK POINTS at the beginning of each session. A Rogue may spend one LUCK POINT to re-roll any failed check or saving throw (but not attack roll). A Rogue may even spend multiple LUCK POINTS to re-roll the same check ir saving throw multiple times. Once spent, the LUCK POINT is gone for the session. Any unused LUCK POINTS are lost at the end of each session. First level Rogues roll 1d4 at the beginning of each session to determine how many LUCK POINTS they have for that session."
+                    "description": "ROGUE'S LUCK per Session: 1d4<br>Use a point of Rogue’s Luck to re-roll any failed check or saving throw."
                 }
             },
             "Sorcerer": {
                 "BloodMagic": {
                     "title": "Blood Magic",
-                    "description": "TODO: very long text about all the blood magic stuff."
-                },
-                "Mend": {
-                    "title": "Mend",
-                    "description": "TODO: very long text about all the blood magic stuff.[[1d4]]"
-                },
-                "Aid": {
-                    "title": "Aid",
-                    "description": "TODO: very long text about all the blood magic stuff."
-                },"Rend": {
-                    "title": "Rend",
-                    "description": "TODO: very long text about all the blood magic stuff.[[1d6]]"
+                    "description": "Once per watch per level, deal damage to self (damage dealt = potency) to choose one of the following effects:<hr><b>REND</b> - <b>potency</b> x d6 damage to visible targets, hits automatically<hr><b>MEND</b> - Add a +<b>potency</b> bonus to any check before rolling<hr><b>AID</b> - <b>potency</b> x d4 healing to non-sorcerer<hr><b>MAX POTENCY:</b> Level + 3"
                 }
             },
             "Warrior": {
                 "CombatReflexes": {
                     "title": "Combat Reflexes",
-                    "description": ""
+                    "description": "Roll initiative 2x and use the best result."
                 },
                 "BattleIntuition": {
                     "title": "Battle intuition",
-                    "description": ""
+                    "description": "Usable once per combat at level 1, twice at level 3, three times at level 7.<br>Pick one of these two effects each use:<hr><b>MIGHTY BLOW</b> - One of your attacks auto hits and deals + level damage<hr><b>MIRACULOUS ESCAPE</b> - One attack auto misses you, after it is rolled, before damage is rolled."
                 }
             }
         }

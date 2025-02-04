@@ -4,13 +4,10 @@
         - ability
         - skill (otional)
         - additional mods
-    - class feature text
-        - sorcerer
-        - warrior
     - rolls with success/ failure feedback
-    - weapon entries
-    - armor entries
-    - equipment slots
+    - rolls for items
+        - scarcity
+        - weapon damage
     - retainers
     - improved description (Notes, Maps & Miscellanea)
     - combat action info

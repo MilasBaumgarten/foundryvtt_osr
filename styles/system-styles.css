@@ -10,6 +10,32 @@
   cursor: pointer;
 }
 
+/* Skill selection */
+.skills-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.skill-row {
+  display: flex;
+  align-items: center;
+  margin-bottom: 10px;
+}
+
+.skill-name {
+  flex: 1;
+}
+
+.minus-btn, .plus-btn {
+  margin: 0 5px;
+  width: 50px;
+}
+
+.skill-value {
+  width: 20px;
+  text-align: center;
+}
+
 /* Header grid styles */
 .grid_header {
   display: grid;

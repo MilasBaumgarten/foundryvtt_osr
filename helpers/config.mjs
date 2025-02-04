@@ -65,7 +65,7 @@ OSR.classes = {
     label: 'OSR.Classes.Sorcerer',
     hitDie: 4,
     features: [
-      "Sorcerer.BloodMagic", "Sorcerer.Mend", "Sorcerer.Aid", "Sorcerer.Rend"
+      "Sorcerer.BloodMagic"
     ],
     levels: [
       {
@@ -84,7 +84,7 @@ OSR.classes = {
     label: 'OSR.Classes.Warrior',
     hitDie: 8,
     features: [
-      "CombatReflexes, BattleIntuition"
+      "Warrior.CombatReflexes", "Warrior.BattleIntuition"
     ],
     levels: [
       {

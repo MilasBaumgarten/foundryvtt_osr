@@ -74,7 +74,13 @@
                     <div>
                         <div><span class="initiative rollable" data-roll="d20+@combat.initiative.mod" data-label="initiative" data-type="initiative">1d10 + <br>{{numberFormat system.combat.initiative.mod decimals=0}}</span></div>
                     </div>
-                    <div>{{numberFormat system.combat.armorClass.value}}</div>
+                    <div>
+                        <div>{{numberFormat system.combat.armorClass.total}}</div>
+                        <div class="grid grid-2col">
+                            Mod: +
+                            <input type="text" name="system.combat.armorClass.mod" value="{{system.combat.armorClass.mod}}" data-dtype="Number"/>
+                        </div>
+                    </div>
                     <div>
                         <div>Total <input type="text" name="system.resources.health.max" value="{{system.resources.health.max}}" data-dtype="Number"/></div>
                         <div>Current <input type="text" name="system.resources.health.value" value="{{system.resources.health.value}}" data-dtype="Number"/></div>
@@ -88,7 +94,33 @@
                     <div>Ranged: 
                         <span class="attack rollable" data-roll="d20+@combat.attack.ranged" data-label="ranged attack" data-type="attack">{{numberFormat system.combat.attack.ranged decimals=0 sign=true}}</span>
                     </div>
-                </div> 
+                </div>
+                {{!-- Weapon Items --}}
+                <div>
+                    <div class="grid grid-3col">
+                        <div><b>Weapon</b></div>
+                        <div><b>Damage</b></div>
+                        <div><b>Notes</b></div>
+                        {{#each system.equipment.weapons as |slot key|}}
+                            <input type="text" name="system.equipment.weapons.{{key}}.name" value="{{slot.name}}"/>
+                            <input type="text" name="system.equipment.weapons.{{key}}.damage" value="{{slot.damage}}"/>
+                            <input type="text" name="system.equipment.weapons.{{key}}.notes" value="{{slot.notes}}"/>
+                        {{/each}}
+                    </div>
+                </div>
+                {{!-- Armor Items --}}
+                <div>
+                    <div class="grid grid-3col">
+                        <div><b>Armor</b></div>
+                        <div><b>Modifier</b></div>
+                        <div><b>Notes</b></div>
+                        {{#each system.equipment.armor as |slot key|}}
+                            <input type="text" name="system.equipment.armor.{{key}}.name" value="{{slot.name}}"/>
+                            <input type="text" name="system.equipment.armor.{{key}}.modifier" value="{{slot.modifier}}"/>
+                            <input type="text" name="system.equipment.armor.{{key}}.notes" value="{{slot.notes}}"/>
+                        {{/each}}
+                    </div>
+                </div>
             </div>
         </div>
 
@@ -99,7 +131,29 @@
 
         {{!-- Items Tab --}}
         <div class="tab items" data-group="primary" data-tab="items">
-            {{!-- TODO: make field to write down items --}}
+            <div>
+                <div class="grid grid-3col">
+                    <div></div>
+                    <div><b>Item</b></div>
+                    <div><b>Scarcity Die</b></div>
+                    {{#each system.equipment.items as |slot key|}}
+                        {{key}}
+                        <input type="text" name="system.equipment.items.{{key}}.description" value="{{slot.description}}"/>
+                        <input type="text" name="system.equipment.items.{{key}}.scarcityDie" value="{{slot.scarcityDie}}"/>
+                    {{/each}}
+                </div>
+                {{!-- Other Items --}}
+                <div class="grid grid-2col">
+                    <div>
+                        <div><b>Non-encumbering items</b></div>
+                        {{editor system.equipment.nonencumberingItems.value target="system.equipment.nonencumberingItems.value" engine="prosemirror" button=true editable=editable}}
+                    </div>
+                    <div>
+                        <div><b>Wealth and treasure</b> (100 coins fit in each pouch)</div>
+                        {{editor system.equipment.treasure.value target="system.equipment.treasure.value" engine="prosemirror" button=true editable=editable}}
+                    </div>
+                </div>
+            </div>
         </div>
     </section>
 </form>
