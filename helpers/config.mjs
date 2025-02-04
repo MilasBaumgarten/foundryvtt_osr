@@ -59,7 +59,34 @@ OSR.classes = {
           stealth: 1
         }
       }
-    ]
+    ],
+    equipment: {
+      "weapons": [
+        {
+          name: 'Short Sword',
+          damage: '1d6',
+          notes: ''
+        },
+        {
+          name: 'Shortbow',
+          damage: '1d6',
+          notes: '60` range, requires arrows'
+        }
+      ],
+      "armor": [
+        {
+          name: 'Leather Armor',
+          mod: 2,
+          notes: ''
+        }
+      ],
+      "items": [
+        {
+          description: 'a quiver of arrows (scarcity check per combat scene used)',
+          scarcityDie: '1d8'
+        }
+      ]
+    }
   },
   sorcerer: {
     label: 'OSR.Classes.Sorcerer',
@@ -78,7 +105,21 @@ OSR.classes = {
           literacy: 1
         }
       }
-    ]
+    ],
+    equipment: {
+      "weapons": [
+        {
+          name: 'Ritual Dagger',
+          damage: '1d4',
+          notes: '-4 to hit; 1 shock when used by Sorcerers'
+        },
+        {
+          name: 'Staff',
+          damage: '1d6',
+          notes: 'two-handed'
+        }
+      ]
+    }
   },
   warrior: {
     label: 'OSR.Classes.Warrior',
@@ -95,9 +136,67 @@ OSR.classes = {
         bab: 2,
         skills: {}
       }
-    ]
+    ],
+    equipment: {
+      "weapons": [
+        {
+          name: 'Mace or Sword',
+          damage: '1d8',
+          notes: ''
+        },
+        {
+          name: 'Shortbow',
+          damage: '1d6',
+          notes: '60` range, requires arrows'
+        }
+      ],
+      "armor": [
+        {
+          name: 'Leather Armor',
+          mod: 2,
+          notes: ''
+        }
+      ],
+      "items": [
+        {
+          description: 'a quiver of arrows (scarcity check per combat scene used)',
+          scarcityDie: '1d8'
+        }
+      ]
+    }
   }
 };
+
+OSR.startingEquipment = [
+  {
+    description: 'common cloths (takes up no item slots when worn)',
+    scarcityDie: ''
+  },
+  {
+    description: 'backpack (adds 4 item slots, -2 for stealth checks)',
+    scarcityDie: ''
+  },
+  {
+    description: 'coin pouch (holds 100 coins)',
+    scarcityDie: ''
+  },
+  {
+    description: 'pilgrim\'s case (tinder set, mug, plate, cutlery, small pot, fire grate)',
+    scarcityDie: ''
+  },
+  {
+    description: 'bedroll (allows restfull sleep outdoors)',
+    scarcityDie: ''
+  },
+  {
+    description: 'rations (scarcity check each day whether eaten or not)',
+    scarcityDie: '1d4'
+  },
+  {
+    description: 'waterskin (scarcity check per day used, can be refilled at a clean water source)',
+    scarcityDie: '1d8'
+  }
+]
 
 OSR.abilityModifiers = {
     3: -3,

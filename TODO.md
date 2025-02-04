@@ -16,7 +16,6 @@
     - level up
 - NPC Sheet
     - everything
-- 1 button character creation
 - most likely remove all references to items
 - clean up css
 - class advancements

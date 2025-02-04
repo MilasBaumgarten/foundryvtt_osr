@@ -1,3 +1,5 @@
+import { OSR } from "../../helpers/config.mjs";
+
 /**
  * Extend the basic ActorSheet with some very simple modifications
  * @extends {ActorSheet}
@@ -203,10 +205,29 @@ export class PlayerActorSheet extends ActorSheet {
     }
 
     __selectClass(className) {
-        this.actor.update({
+        let updateData = {
             "system.class.value": className,
             "system.level": 1
-        });
+        };
+        
+        // add class specific starting equipment
+        let equipment = OSR.classes[className].equipment;
+        
+        for (const index in equipment.weapons) {
+            updateData[`system.equipment.weapons.slot${Number(index) + 1}`] = equipment.weapons[index];
+        }
+        for (const index in equipment.armor) {
+            updateData[`system.equipment.armor.slot${Number(index) + 1}`] = equipment.armor[index];
+            updateData['system.combat.armorClass.mod'] = equipment.armor[index].mod;
+        }
+        for (const index in equipment.items) {
+            // skip the already added items to not overwrite anything
+            updateData[`system.equipment.items.slot${Number(index) + OSR.startingEquipment.length}`] = equipment.items[index];
+        }
+
+
+        console.log(updateData);
+        this.actor.update(updateData);
     }
 
     __onSelectTwoSkills() {

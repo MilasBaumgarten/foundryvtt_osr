@@ -76,7 +76,7 @@ export class HeroDataModel extends ActorDataModel {
                 armor: new SchemaField(Array.from({ length: 2 }, (_, i) => i + 1).reduce((obj, i) => {
                     obj[`slot${i}`] = new SchemaField({
                         name: new HTMLField({ required: true, blank: true }),
-                        modifier: new HTMLField({ required: true, blank: true }),
+                        mod: new HTMLField({ required: true, blank: true }),
                         notes: new HTMLField({ required: true, blank: true })
                     });
                     return obj;
