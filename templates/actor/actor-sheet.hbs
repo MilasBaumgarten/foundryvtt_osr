@@ -7,9 +7,9 @@
             <div class="grid_header">
                 <div class="name"><h2 class="charname"><input name="name" type="text" value="{{actor.name}}" placeholder="Name"/></h2></div>
                 <button class="clickable" data-type="select-class"><h2>{{system.class.label}}</h2></button>
-                <div class="level align-right"><h2>{{system.level}} Level</h2></div>
-                <div class="xp align-right"><h2>{{system.xp}} XP</h2></div>
-                <div class="image align-center"><img class="profile-img" src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/></div>
+                <div class="level"><h2>{{system.level}} Level</h2></div>
+                <div class="xp"><h2>{{system.xp}} XP</h2></div>
+                <div class="image"><img src="{{actor.img}}" data-edit="img" title="{{actor.name}}" height="100" width="100"/></div>
             </div>
         </div>
     </header>
@@ -24,35 +24,33 @@
     {{!-- Sheet Body --}}
     <section class="sheet-body">
         <div class="tab features" data-group="primary" data-tab="features">
-            <section class="grid grid-3col">
+            <section class="grid-3col">
                 {{!-- Ability Scores --}}
                 <div>
                     <h2>Ability Scores</h2>
-                    <div class="ability flexrow flex-group-center">
-                        <div class="ability-header">Score</div>
-                        <div class="ability-header">Value</div>
-                        <div class="ability-header">Mod</div>
-                        <div class="ability-header">Save</div>
-                    </div>
-                    {{#each system.abilities as |ability key|}}
-                        <div class="ability flexrow flex-group-center">
-                            <label for="system.abilities.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="d6+@abilities.{{key}}.mod" data-label="{{ability.label}} check" data-type="check">{{ability.label}}</label>
+                    <div class="grid-4col-2nd-small">
+                        <div>Score</div>
+                        <div>Value</div>
+                        <div>Mod</div>
+                        <div>Save</div>
+                        {{#each system.abilities as |ability key|}}
+                            <label for="system.abilities.{{key}}.value" class="rollable" data-roll="d6+@abilities.{{key}}.mod" data-label="{{ability.label}} check" data-type="check">{{ability.label}}</label>
                             <input type="text" name="system.abilities.{{key}}.value" value="{{ability.value}}" data-dtype="Number"/>
-                            <span class="ability-mod rollable" data-roll="d6+@abilities.{{key}}.mod" data-label="{{ability.label}} check" data-type="check">{{numberFormat ability.mod decimals=0 sign=true}}</span>
-                            <span class="ability-save rollable" data-roll="d10+@abilities.{{key}}.mod" data-label="{{ability.label}} save" data-type="save">{{numberFormat ability.save decimals=0 sign=true}}</span>
-                        </div>
-                    {{/each}}
+                            <span class="rollable" data-roll="d6+@abilities.{{key}}.mod" data-label="{{ability.label}} check" data-type="check">{{numberFormat ability.mod decimals=0 sign=true}}</span>
+                            <span class="rollable" data-roll="d10+@abilities.{{key}}.mod" data-label="{{ability.label}} save" data-type="save">{{numberFormat ability.save decimals=0 sign=true}}</span>
+                        {{/each}}
+                    </div>
                 </div>
 
                 {{!-- Skills --}}
                 <div>
                     <h2>Skills</h2>
-                    {{#each system.skills as |skill key|}}
-                        <div class="skill flexrow flex-group-center">
-                            <label for="system.skills.{{key}}.value" class="resource-label rollable flexlarge align-left" data-roll="d6+@skills.{{key}}.mod" data-label="{{skill.label}} check" data-type="check">{{skill.label}}</label>
+                    <div class="grid-2col">
+                        {{#each system.skills as |skill key|}}
+                            <label for="system.skills.{{key}}.value" class="rollable" data-roll="d6+@skills.{{key}}.mod" data-label="{{skill.label}} check" data-type="check">{{skill.label}}</label>
                             <span class="skill-mod rollable" data-roll="d6+@skills.{{key}}.mod" data-label="{{skill.label}} check" data-type="check">{{numberFormat skill.mod decimals=0 sign=true}}</span>
-                        </div>
-                    {{/each}}
+                        {{/each}}
+                    </div>
                 </div>
 
                 {{!-- Class Features --}}
@@ -65,11 +63,11 @@
 
             <div class="combat">
                 <h2>Combat</h2>
-                <div class="grid grid-6col">
+                <div class="grid-6col">
                     <div><b>Initiative</b></div>
                     <div><b>Armor Class</b></div>
                     <div><b>Hit Points</b></div>
-                    <div class="grid-span-3 align-center"><b>Attack Bonus</b></div>
+                    <div class="grid-span-3"><b>Attack Bonus</b></div>
                     
                     <div>
                         <div><span class="initiative rollable" data-roll="d20+@combat.initiative.mod" data-label="initiative" data-type="initiative">1d10 + <br>{{numberFormat system.combat.initiative.mod decimals=0}}</span></div>
@@ -96,30 +94,28 @@
                     </div>
                 </div>
                 {{!-- Weapon Items --}}
-                <div>
-                    <div class="grid grid-3col">
-                        <div><b>Weapon</b></div>
-                        <div><b>Damage</b></div>
-                        <div><b>Notes</b></div>
-                        {{#each system.equipment.weapons as |slot key|}}
-                            <input type="text" name="system.equipment.weapons.{{key}}.name" value="{{slot.name}}"/>
-                            <input type="text" name="system.equipment.weapons.{{key}}.damage" value="{{slot.damage}}"/>
-                            <input type="text" name="system.equipment.weapons.{{key}}.notes" value="{{slot.notes}}"/>
-                        {{/each}}
-                    </div>
+                <div class="grid-weapon">
+                    <div><b>Weapon</b></div>
+                    <div><b>Damage</b></div>
+                    <div><b>Notes</b></div>
+                    <div></div>
+                    {{#each system.equipment.weapons as |slot key|}}
+                        <input type="text" name="system.equipment.weapons.{{key}}.name" value="{{slot.name}}"/>
+                        <input type="text" name="system.equipment.weapons.{{key}}.damage" value="{{slot.damage}}"/>
+                        <input type="text" name="system.equipment.weapons.{{key}}.notes" value="{{slot.notes}}"/>
+                        <button class="clickable dice-icon" data-type="roll-weapon-damage" data-roll="{{slot.damage}}" data-label="{{slot.name}} attack"></button>
+                    {{/each}}
                 </div>
                 {{!-- Armor Items --}}
-                <div>
-                    <div class="grid grid-3col">
-                        <div><b>Armor</b></div>
-                        <div><b>Modifier</b></div>
-                        <div><b>Notes</b></div>
-                        {{#each system.equipment.armor as |slot key|}}
-                            <input type="text" name="system.equipment.armor.{{key}}.name" value="{{slot.name}}"/>
-                            <input type="text" name="system.equipment.armor.{{key}}.modifier" value="{{slot.modifier}}"/>
-                            <input type="text" name="system.equipment.armor.{{key}}.notes" value="{{slot.notes}}"/>
-                        {{/each}}
-                    </div>
+                <div class="grid-3col-small-center">
+                    <div><b>Armor</b></div>
+                    <div><b>Modifier</b></div>
+                    <div><b>Notes</b></div>
+                    {{#each system.equipment.armor as |slot key|}}
+                        <input type="text" name="system.equipment.armor.{{key}}.name" value="{{slot.name}}"/>
+                        <input type="text" name="system.equipment.armor.{{key}}.modifier" value="{{slot.modifier}}"/>
+                        <input type="text" name="system.equipment.armor.{{key}}.notes" value="{{slot.notes}}"/>
+                    {{/each}}
                 </div>
             </div>
         </div>
@@ -132,18 +128,20 @@
         {{!-- Items Tab --}}
         <div class="tab items" data-group="primary" data-tab="items">
             <div>
-                <div class="grid grid-3col">
+                <div class="grid-items">
                     <div></div>
                     <div><b>Item</b></div>
                     <div><b>Scarcity Die</b></div>
+                    <div></div>
                     {{#each system.equipment.items as |slot key|}}
                         {{key}}
                         <input type="text" name="system.equipment.items.{{key}}.description" value="{{slot.description}}"/>
                         <input type="text" name="system.equipment.items.{{key}}.scarcityDie" value="{{slot.scarcityDie}}"/>
+                        <button class="clickable dice-icon" data-type="roll-scarcity" data-roll="{{slot.scarcityDie}}" data-label="{{slot.description}} scarcity"></button>
                     {{/each}}
                 </div>
                 {{!-- Other Items --}}
-                <div class="grid grid-2col">
+                <div class="grid-2col-equal">
                     <div>
                         <div><b>Non-encumbering items</b></div>
                         {{editor system.equipment.nonencumberingItems.value target="system.equipment.nonencumberingItems.value" engine="prosemirror" button=true editable=editable}}

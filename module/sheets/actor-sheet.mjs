@@ -108,47 +108,9 @@ export class PlayerActorSheet extends ActorSheet {
         // Everything below here is only needed if the sheet is editable
         if (!this.isEditable) return;
     
-        // Add Inventory Item
-        html.on('click', '.item-create', this._onItemCreate.bind(this));
-    
-        // Delete Inventory Item
-        html.on('click', '.item-delete', (ev) => {
-            const li = $(ev.currentTarget).parents('.item');
-            const item = this.actor.items.get(li.data('itemId'));
-            item.delete();
-            li.slideUp(200, () => this.render(false));
-        });
-    
         // Rollable abilities.
         html.on('click', '.rollable', this._onRoll.bind(this));
         html.on('click', '.clickable', this._onClick.bind(this));
-    }
-
-    /**
-     * Handle creating a new Owned Item for the actor using initial data defined in the HTML dataset
-     * @param {Event} event   The originating click event
-     * @private
-     */
-    async _onItemCreate(event) {
-        event.preventDefault();
-        const header = event.currentTarget;
-        // Get the type of item to create.
-        const type = header.dataset.type;
-        // Grab any data associated with this control.
-        const data = duplicate(header.dataset);
-        // Initialize a default name.
-        const name = `New ${type.capitalize()}`;
-        // Prepare the item object.
-        const itemData = {
-            name: name,
-            type: type,
-            data: data
-        };
-        // Remove the type from the dataset since it's in the itemData.type prop.
-        delete itemData.data["type"];
-    
-        // Finally, create the item!
-        return await Item.create(itemData, {parent: this.actor});
     }
 
     _onClick(event) {
@@ -159,6 +121,24 @@ export class PlayerActorSheet extends ActorSheet {
         if (dataset.type) {
             if (dataset.type == 'select-class') {
                 this.__onSelectClass();
+            } else if (dataset.type == 'roll-weapon-damage') {
+                // validate roll data using regex
+                if (this.__validateRollDate(dataset.roll)) {
+                    Roll.create(dataset.roll).toMessage({
+                        flavor: dataset.label ? `${dataset.label}` : ''
+                    });
+                } else {
+                    console.warn('Invalid roll data!' + dataset.roll);
+                }
+            } else if (dataset.type == 'roll-scarcity') {
+                // validate roll data using regex
+                if (this.__validateRollDate(dataset.roll)) {
+                    Roll.create(dataset.roll).toMessage({
+                        flavor: dataset.label ? `${dataset.label}` : ''
+                    });
+                } else {
+                    console.warn('Invalid roll data!' + dataset.roll);
+                }
             }
         }
     }
@@ -209,6 +189,8 @@ export class PlayerActorSheet extends ActorSheet {
             "system.class.value": className,
             "system.level": 1
         };
+
+        // TODO: set HP
         
         // add class specific starting equipment
         let equipment = OSR.classes[className].equipment;
@@ -225,8 +207,6 @@ export class PlayerActorSheet extends ActorSheet {
             updateData[`system.equipment.items.slot${Number(index) + OSR.startingEquipment.length}`] = equipment.items[index];
         }
 
-
-        console.log(updateData);
         this.actor.update(updateData);
     }
 
@@ -508,5 +488,10 @@ export class PlayerActorSheet extends ActorSheet {
             });
             return roll;
         }
+    }
+
+    __validateRollDate(rollData) {
+        let rollRegex = /^(\d+d\d+)([+-]\d*)?$/;
+        return rollRegex.test(rollData);
     }
 }

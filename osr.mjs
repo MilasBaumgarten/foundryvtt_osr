@@ -1,4 +1,4 @@
-import { HeroDataModel, NpcDataModel, WeaponDataModel, SpellDataModel, GenericDataModel } from "./module/data-models.mjs";
+import { HeroDataModel, NpcDataModel } from "./module/data-models.mjs";
 import { SystemActor, SystemItem } from "./module/documents.mjs";
 import { PlayerActorSheet } from "./module/sheets/actor-sheet.mjs";
 // Import helper/utility classes and constants.
@@ -16,12 +16,6 @@ Hooks.once("init", () => {
   CONFIG.Actor.dataModels = {
     hero: HeroDataModel,
     npc: NpcDataModel
-  };
-
-  CONFIG.Item.dataModels = {
-    weapon: WeaponDataModel,
-    spell: SpellDataModel,
-    generic: GenericDataModel
   };
 
   // Configure sheet classes.

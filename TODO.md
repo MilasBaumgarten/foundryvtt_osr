@@ -5,9 +5,6 @@
         - skill (otional)
         - additional mods
     - rolls with success/ failure feedback
-    - rolls for items
-        - scarcity
-        - weapon damage
     - retainers
     - improved description (Notes, Maps & Miscellanea)
     - combat action info
