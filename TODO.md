@@ -10,6 +10,7 @@
     - retainers
 - NPC Sheet
     - everything
+- documentation
 
 ## Backlog
 - class advancements and XP
