@@ -4,16 +4,13 @@
         - ability
         - skill (otional)
         - additional mods
-    - rolls with success/ failure feedback
+    - when clicking on class again, warn that this will reset the player
+    - improved description tab (Notes, Maps & Miscellanea)
+    - combat action info (could be somewhere separate as a cheat sheet)
     - retainers
-    - improved description (Notes, Maps & Miscellanea)
-    - combat action info
-    - fancy style
-    - XP
-    - level up
 - NPC Sheet
     - everything
-- most likely remove all references to items
-- clean up css
-- class advancements
-- when clicking on class again, warn that this will reset the player
+
+## Backlog
+- class advancements and XP
+- fancy style for character sheets

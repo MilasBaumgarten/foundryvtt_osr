@@ -37,7 +37,7 @@
                             <label for="system.abilities.{{key}}.value" class="rollable" data-roll="d6+@abilities.{{key}}.mod" data-label="{{ability.label}} check" data-type="check">{{ability.label}}</label>
                             <input type="text" name="system.abilities.{{key}}.value" value="{{ability.value}}" data-dtype="Number"/>
                             <span class="rollable" data-roll="d6+@abilities.{{key}}.mod" data-label="{{ability.label}} check" data-type="check">{{numberFormat ability.mod decimals=0 sign=true}}</span>
-                            <span class="rollable" data-roll="d10+@abilities.{{key}}.mod" data-label="{{ability.label}} save" data-type="save">{{numberFormat ability.save decimals=0 sign=true}}</span>
+                            <span class="rollable" data-roll="d10+@abilities.{{key}}.save" data-label="{{ability.label}} save" data-type="save">{{numberFormat ability.save decimals=0 sign=true}}</span>
                         {{/each}}
                     </div>
                 </div>

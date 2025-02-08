@@ -28,81 +28,15 @@ export class PlayerActorSheet extends ActorSheet {
         context.system = actorData.system;
         context.flags = actorData.flags;
 
-        // Prepare character data and items.
-        if (actorData.type == 'hero') {
-            this._prepareItems(context);
-        }
-
-        // Prepare NPC data and items.
-        if (actorData.type == 'npc') {
-            this._prepareItems(context);
-        }
-
         // Add roll data for TinyMCE editors.
         context.rollData = context.actor.getRollData();
 
         return context;
     }
 
-    /**
-     * Organize and classify Items for Character sheets.
-     *
-     * @param {Object} actorData The actor to prepare.
-     *
-     * @return {undefined}
-     */
-    _prepareItems(context) {
-        // Initialize containers.
-        const gear = [];
-        const features = [];
-        const spells = {
-        0: [],
-        1: [],
-        2: [],
-        3: [],
-        4: [],
-        5: [],
-        6: [],
-        7: [],
-        8: [],
-        9: []
-        };
-    
-        // Iterate through items, allocating to containers
-        for (let i of context.items) {
-            i.img = i.img || DEFAULT_TOKEN;
-            // Append to gear.
-            if (i.type === 'item') {
-                gear.push(i);
-            }
-            // Append to features.
-            else if (i.type === 'feature') {
-                features.push(i);
-            }
-            // Append to spells.
-            else if (i.type === 'spell') {
-                if (i.system.spellLevel != undefined) {
-                spells[i.system.spellLevel].push(i);
-                }
-            }
-        }
-    
-        // Assign and return
-        context.gear = gear;
-        context.features = features;
-        context.spells = spells;
-    }
-
     /** @override */
     activateListeners(html) {
         super.activateListeners(html);
-    
-        // Render the item sheet for viewing/editing prior to the editable check.
-        html.on('click', '.item-edit', (ev) => {
-            const li = $(ev.currentTarget).parents('.item');
-            const item = this.actor.items.get(li.data('itemId'));
-            item.sheet.render(true);
-        });
     
         // -------------------------------------------------------------
         // Everything below here is only needed if the sheet is editable
@@ -471,6 +405,7 @@ export class PlayerActorSheet extends ActorSheet {
                     success = roll.total >= 6;
                 }
                 else if (dataset.type == 'save') {
+                    // TODO: add auto fail/ success
                     success = roll.total >= 10;
                 }
                 else if (dataset.type == 'attack') {
@@ -478,17 +413,35 @@ export class PlayerActorSheet extends ActorSheet {
                 }
             }
 
-            // TODO: color message based on success
+            // Render the roll's default HTML
+            let rollHTML = await roll.render();
 
+            // Construct the chat message content
+            let color = success ? "green" : "red";
+            let message = success ? "Success" : "Failure";
+            let customMessage = `
+                <div>
+                    ${dataset.label}: <span style="color:${color}">${message} </span>
+                </div>
+            `;
+
+            // Combine the custom message and roll HTML
+            let chatContent = `
+                ${customMessage}
+                ${rollHTML}
+            `;
+
+            // send the message to the chat
             ChatMessage.create({
                 speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-                flavor: dataset.label ? `${dataset.label}` : '',
-                // content: `<div>${roll.total} ${success ? 'Success' : 'Failure'}</div>`,
+                content: chatContent,
                 rolls: [roll]
             });
+
             return roll;
         }
     }
+    
 
     __validateRollDate(rollData) {
         let rollRegex = /^(\d+d\d+)([+-]\d*)?$/;
