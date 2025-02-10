@@ -4,6 +4,11 @@ export class SystemActor extends Actor {
     constructor(data, context) {
         super(data, context);
 
+        // only do the initial rolls for pcs
+        if (data.type != "pc") {
+            return;
+        }
+
         // TODO: fix this being called twice (first time the updateData has no _id)
         // Loop through ability scores, assign a random value.
         // Afterwards check if the sum of the ability modifiers is greater than 0.

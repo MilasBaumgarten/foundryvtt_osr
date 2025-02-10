@@ -1,15 +1,11 @@
 import { OSR } from "../../helpers/config.mjs";
+import { Utils } from "../../helpers/utils.mjs";
 
-/**
- * Extend the basic ActorSheet with some very simple modifications
- * @extends {ActorSheet}
- */
 export class PlayerActorSheet extends ActorSheet {
 
     /** @override */
     static get defaultOptions() {
       return foundry.utils.mergeObject(super.defaultOptions, {
-        classes: ["osr", "sheet", "actor"],
         template: "systems/osr/templates/actor/actor-sheet.hbs",
         width: 600,
         height: 600,
@@ -37,7 +33,7 @@ export class PlayerActorSheet extends ActorSheet {
     /** @override */
     activateListeners(html) {
         super.activateListeners(html);
-    
+
         // -------------------------------------------------------------
         // Everything below here is only needed if the sheet is editable
         if (!this.isEditable) return;
@@ -57,7 +53,7 @@ export class PlayerActorSheet extends ActorSheet {
                 this.__onSelectClass();
             } else if (dataset.type == 'roll-weapon-damage') {
                 // validate roll data using regex
-                if (this.__validateRollDate(dataset.roll)) {
+                if (Utils.validateRollDate(dataset.roll)) {
                     Roll.create(dataset.roll).toMessage({
                         flavor: dataset.label ? `${dataset.label}` : ''
                     });
@@ -66,7 +62,7 @@ export class PlayerActorSheet extends ActorSheet {
                 }
             } else if (dataset.type == 'roll-scarcity') {
                 // validate roll data using regex
-                if (this.__validateRollDate(dataset.roll)) {
+                if (Utils.validateRollDate(dataset.roll)) {
                     Roll.create(dataset.roll).toMessage({
                         flavor: dataset.label ? `${dataset.label}` : ''
                     });
@@ -391,60 +387,15 @@ export class PlayerActorSheet extends ActorSheet {
         const dataset = element.dataset;
 
         if (dataset.roll) {
-            let roll = new Roll(dataset.roll, this.actor.getRollData());
-            await roll.evaluate();
-
-            let success = true;
-
-            if (dataset.type) {
-                if (dataset.type == 'check') {
-                    // TODO: display a popup with the ability to select modifiers before roll
-                    // TODO: add option for impossible to fail/ succeed roll (2d6)
-                        // impossible to fail: 2x 1 = fail
-                        // impossible to succeed: 2x 6 = success
-                    success = roll.total >= 6;
-                }
-                else if (dataset.type == 'save') {
-                    // TODO: add auto fail/ success
-                    success = roll.total >= 10;
-                }
-                else if (dataset.type == 'attack') {
-                    // TODO: display a popup with the ability to select modifiers before roll
-                }
+            if (dataset.type == 'check' || dataset.type == 'save') {
+                Utils.renderRoll(dataset, this.actor);
+            } else {
+                // Render the roll
+                new Roll(dataset.roll, rollingActor.getRollData()).toMessage({
+                    speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+                    flavor: dataset.label ? `${dataset.label}` : ''
+                });
             }
-
-            // Render the roll's default HTML
-            let rollHTML = await roll.render();
-
-            // Construct the chat message content
-            let color = success ? "green" : "red";
-            let message = success ? "Success" : "Failure";
-            let customMessage = `
-                <div>
-                    ${dataset.label}: <span style="color:${color}">${message} </span>
-                </div>
-            `;
-
-            // Combine the custom message and roll HTML
-            let chatContent = `
-                ${customMessage}
-                ${rollHTML}
-            `;
-
-            // send the message to the chat
-            ChatMessage.create({
-                speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-                content: chatContent,
-                rolls: [roll]
-            });
-
-            return roll;
         }
-    }
-    
-
-    __validateRollDate(rollData) {
-        let rollRegex = /^(\d+d\d+)([+-]\d*)?$/;
-        return rollRegex.test(rollData);
     }
 }

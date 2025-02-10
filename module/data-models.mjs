@@ -11,13 +11,11 @@ class ActorDataModel extends foundry.abstract.TypeDataModel {
 
         schema.resources = new SchemaField({
             health: new SchemaField({
-                    min: new NumberField({ required: true, initial: 0 }),
                     value: new NumberField({ required: true, initial: 10 }),
                     max: new NumberField({ required: true, initial: 10 })
             }),
             hitDie: new SchemaField({
-                    min: new NumberField({ required: true, initial: 0 }),
-                    value: new NumberField({ required: true, initial: 10 })
+                    value: new StringField({ required: true, blank: true })
             })
         });
 
@@ -25,7 +23,7 @@ class ActorDataModel extends foundry.abstract.TypeDataModel {
     }
 }
 
-export class HeroDataModel extends ActorDataModel {
+export class PcDataModel extends ActorDataModel {
     static defineSchema() {
         return {
             ...super.defineSchema(),
@@ -181,32 +179,15 @@ export class HeroDataModel extends ActorDataModel {
         // Handle class label localization.
         this.class.label = game.i18n.localize(CONFIG.OSR.classes[this.class.value].label) ?? key;
     }
-
-    /**
-     * Override getRollData() that's supplied to rolls.
-     */
-    getRollData() {
-        const data = super.getRollData();
-
-        // Copy the ability scores to the top level, so that rolls can use
-        // formulas like `@str.mod + 4`.
-        if (this.abilities) {
-            for (let [k,v] of Object.entries(this.abilities)) {
-                data[k] = foundry.utils.deepClone(v);
-            }
-        }
-
-        return data;
-    }
 }
 
 export class NpcDataModel extends ActorDataModel {
     static defineSchema() {
         return {
                 ...super.defineSchema(),
-                modifiers: new SchemaField(Object.keys(CONFIG.OSR.abilities).reduce((obj, ability) => {
+                abilities: new SchemaField(Object.keys(CONFIG.OSR.abilities).reduce((obj, ability) => {
                     obj[ability] = new SchemaField({
-                        value: new NumberField({required: true, nullable: false, integer: true, initial: 0, min: -3, max: 3 }),
+                        mod: new NumberField({required: true, nullable: false, integer: true, initial: 0, min: -3, max: 3 }),
                         label: new StringField({required: true, blank: true })
                     });
                     return obj;
@@ -214,19 +195,22 @@ export class NpcDataModel extends ActorDataModel {
                 save: new SchemaField({
                     value: new NumberField({ required: true, initial: 0 })
                 }),
+                armorClass: new SchemaField({
+                    value: new NumberField({ required: true, initial: 12 })
+                }),
                 morale: new SchemaField({
                         value: new NumberField({ required: true, initial: 10 })
                 }),
+                move: new StringField({ required: true, blank: true }),
                 features: new HTMLField({ required: true, blank: true }),
                 notes: new HTMLField({ required: true, blank: true })
         };
     }
 
     prepareDerivedData() {
-        // Loop through ability scores, and add their modifiers to our sheet output.
-        for (const key in this.modifiers) {
-            // Handle ability label localization.
-            this.modifiers[key].label = game.i18n.localize(CONFIG.OSR.abilityAbbreviations[key]) ?? key;
+        for (const key in this.abilities) {
+            // Handle skill label localization.
+            this.abilities[key].label = game.i18n.localize(CONFIG.OSR.abilityAbbreviations[key]) ?? key;
         }
     }
 }

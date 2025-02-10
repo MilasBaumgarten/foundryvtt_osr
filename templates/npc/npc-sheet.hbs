@@ -1,0 +1,66 @@
+<form class="{{cssClass}} {{actor.type}} flexcol" autocomplete="off">
+    {{!-- Sheet Header --}}
+    <header class="sheet-header">
+            <div>
+                        <div class="name">
+                            <h2 class="charname">
+                                <input name="name" type="text" value="{{actor.name}}" placeholder="Name"/>
+                            </h2>
+                        </div>
+            </div>
+    </header>
+
+    <section class="sheet-body">
+        <div class="npc-inline-container">
+            {{#each system.abilities as |ability key|}}
+                <span class="npc-inline-entry">
+                    <label for="system.abilities.{{key}}.value" class="rollable" data-roll="d6+@abilities.{{key}}.mod" data-label="{{ability.label}} check" data-type="check"><b>{{ability.label}}</b></label>
+                    <input type="text" name="system.abilities.{{key}}.mod" value="{{ability.mod}}" data-dtype="Number"/>
+                </span>
+            {{/each}}
+        </div>
+        <div class="npc-inline-container">
+            <span class="npc-inline-entry">
+                <label for="system.armorClass.value"><b>AC</b> </label>
+                <input type="text" name="system.armorClass.value" value="{{system.armorClass.value}}" data-dtype="Number"/>
+            </span>
+            <span class="npc-inline-entry">
+                <label for="system.resource.hitDie.value"><b>HD</b> </label>
+                <input type="text" name="system.resources.hitDie.value" value="{{system.resources.hitDie.value}}" data-dtype="String" class="hitDie"/>
+            </span>
+            <span class="npc-inline-entry">
+                <label for="system.resource.health.value"><b>HP</b> </label>
+                <input type="text" name="system.resources.health.value" value="{{system.resources.health.value}}" data-dtype="Number"/> /
+                <input type="text" name="system.resources.health.max" value="{{system.resources.health.max}}" data-dtype="Number"/>
+            </span>
+            <span class="npc-inline-entry">
+                <label for="system.save.value" class="rollable" data-roll="d10+@save.value" data-label="{{actor.name}} saving throw" data-type="save"><b>Save</b> </label>
+                <input type="text" name="system.save.value" value="{{system.save.value}}" data-dtype="Number"/>
+            </span>
+            <span class="npc-inline-entry">
+                <label for="system.morale.value" class="rollable" data-roll="d10+@morale.value" data-label="{{actor.name}} morale check" data-type="save"><b>Morale</b> </label>
+                <input type="text" name="system.morale.value" value="{{system.morale.value}}" data-dtype="Number"/>
+        </div>
+        <div>
+            <span class="npc-inline-entry">
+                <label for="system.move"><b>Move</b> </label>
+                <input type="text" name="system.move" value="{{system.move}}" data-dtype="String" class="move"/>
+            </span>
+        </div>
+
+        {{!-- Sheet Tab Navigation --}}
+        <nav class="sheet-tabs tabs" data-group="primary">
+                <a class="item" data-tab="actions">Actions</a>
+                <a class="item" data-tab="notes">Notes</a>
+        </nav>
+
+        <div class="tab actions" data-group="primary" data-tab="actions">
+            <h2>Actions</h2>
+            {{editor enrichedFeatures target="system.features" engine="prosemirror" rollData=rollData button=true editable=editable}}
+        </div>
+        <div class="tab notes" data-group="primary" data-tab="notes">
+            <h2>Notes</h2>
+            {{editor enrichednotes target="system.notes" engine="prosemirror" button=true editable=editable}}
+        </div>
+    </section>
+</form>

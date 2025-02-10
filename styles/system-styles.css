@@ -10,7 +10,7 @@
   cursor: pointer;
 }
 
-/* Skill selection */
+/* PC */
 .skills-list {
   display: flex;
   flex-direction: column;
@@ -34,6 +34,34 @@
 .skill-value {
   width: 20px;
   text-align: center;
+}
+
+/* NPC */
+.npc-inline-container {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.npc-inline-entry {
+  display: flex;
+  align-items: center;
+  margin-right: 10px;
+}
+
+.npc-inline-entry label {
+  margin-right: 5px;
+}
+
+.npc-inline-entry .hitDie {
+  width: 50px;
+}
+
+.npc-inline-entry .move {
+  width: 100%;
+}
+
+.npc-inline-entry input {
+  width: 25px;
 }
 
 /* Header grid styles */

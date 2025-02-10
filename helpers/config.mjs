@@ -38,13 +38,13 @@ OSR.skills = {
 OSR.classes = {
   "unassigned": {
     label: 'OSR.Classes.Unassigned',
-    hitDie: 1,
+    hitDie: '1d1',
     features: [],
     levels: []
   },
   "rogue": {
     label: 'OSR.Classes.Rogue',
-    hitDie: 6,
+    hitDie: '1d6',
     features: [
       "Rogue.Luck", "Rogue.SneakAttack"
     ],
@@ -90,7 +90,7 @@ OSR.classes = {
   },
   sorcerer: {
     label: 'OSR.Classes.Sorcerer',
-    hitDie: 4,
+    hitDie: '1d4',
     features: [
       "Sorcerer.BloodMagic"
     ],
@@ -123,7 +123,7 @@ OSR.classes = {
   },
   warrior: {
     label: 'OSR.Classes.Warrior',
-    hitDie: 8,
+    hitDie: '1d8',
     features: [
       "Warrior.CombatReflexes", "Warrior.BattleIntuition"
     ],
