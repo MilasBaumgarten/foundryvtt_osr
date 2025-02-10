@@ -4,7 +4,7 @@
     "url": "https://github.com/MilasBaumgarten/foundryvtt_osr/",
     "license": "LICENSE.md",
     "description": "An implementation of the Outcast Silver Raiders system.",
-    "version": "0.1.1",
+    "version": "0.1.2",
     "compatibility": {
       "minimum": 12,
       "verified": 12

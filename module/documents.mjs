@@ -4,12 +4,17 @@ export class SystemActor extends Actor {
     constructor(data, context) {
         super(data, context);
 
-        // only do the initial rolls for pcs
-        if (data.type != "pc") {
+        // don't initialize if no id is available (aka. too early)
+        if (!data._id) {
             return;
+        } else if (data.type == "pc") {
+            __initializePC();
+        } else if (data.type == "npc") {
+            // TODO: roll HP once when creating a token
         }
+    }
 
-        // TODO: fix this being called twice (first time the updateData has no _id)
+    __initializePC() {
         // Loop through ability scores, assign a random value.
         // Afterwards check if the sum of the ability modifiers is greater than 0.
         // If not, a sibling has died and a new character gets rolled.
@@ -18,6 +23,7 @@ export class SystemActor extends Actor {
         let updateData;
         do{
             updateData = {};
+            modSum = 0;
             for (const key in OSR.abilities) {
                 // Roll 3d6 to get the ability score. Because the calculation returns
                 // a value between 0 and 5 for every roll, we add 3 to the total to
@@ -39,7 +45,10 @@ export class SystemActor extends Actor {
             updateData[`system.equipment.items.slot${key}`] = OSR.startingEquipment[key];
         }
         updateData["system.equipment.treasure.value"] = `${Math.ceil(Math.random() * 6)} gold pieces (each worth 50 silver pieces)`
-
+        
+        // link tokens to thsi actor
+        updateData["prototypeToken.actorLink"] = true;
+        
         this.update(updateData);
     }
 

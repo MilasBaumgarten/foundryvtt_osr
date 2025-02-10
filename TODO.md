@@ -5,7 +5,6 @@
     - improved description tab (Notes, Maps & Miscellanea)
     - scarcity check feedback
 - Token
-    - PC: bind the values to the sheet and don't create a new entity
     - NPC: roll hp on token creation using HD
 - documentation
 
