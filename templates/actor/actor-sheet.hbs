@@ -33,10 +33,10 @@
                         <div>Mod</div>
                         <div>Save</div>
                         {{#each system.abilities as |ability key|}}
-                            <label for="system.abilities.{{key}}.value" class="rollable" data-roll="d6+@abilities.{{key}}.mod" data-label="{{ability.label}} check" data-type="check">{{ability.label}}</label>
+                            <label for="system.abilities.{{key}}.value" class="rollable" data-ability="{{key}}" data-type="check">{{ability.label}}</label>
                             <input type="text" name="system.abilities.{{key}}.value" value="{{ability.value}}" data-dtype="Number"/>
-                            <span class="rollable" data-roll="d6+@abilities.{{key}}.mod" data-label="{{ability.label}} check" data-type="check">{{numberFormat ability.mod decimals=0 sign=true}}</span>
-                            <span class="rollable" data-roll="d10+@abilities.{{key}}.save" data-label="{{ability.label}} save" data-type="save">{{numberFormat ability.save decimals=0 sign=true}}</span>
+                            <span class="rollable" data-ability="{{key}}" data-type="check">{{numberFormat ability.mod decimals=0 sign=true}}</span>
+                            <span class="rollable" data-ability="{{key}}" data-type="save">{{numberFormat ability.save decimals=0 sign=true}}</span>
                         {{/each}}
                     </div>
                 </div>
@@ -46,8 +46,8 @@
                     <h2>Skills</h2>
                     <div class="grid-2col">
                         {{#each system.skills as |skill key|}}
-                            <label for="system.skills.{{key}}.value" class="rollable" data-roll="d6+@skills.{{key}}.mod" data-label="{{skill.label}} check" data-type="check">{{skill.label}}</label>
-                            <span class="skill-mod rollable" data-roll="d6+@skills.{{key}}.mod" data-label="{{skill.label}} check" data-type="check">{{numberFormat skill.mod decimals=0 sign=true}}</span>
+                            <label for="system.skills.{{key}}.value" class="rollable" data-skill="{{key}}" data-type="check">{{skill.label}}</label>
+                            <span class="rollable" data-skill="{{key}}" data-type="check">{{numberFormat skill.mod decimals=0 sign=true}}</span>
                         {{/each}}
                     </div>
                 </div>

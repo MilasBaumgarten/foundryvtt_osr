@@ -79,6 +79,7 @@ export class PlayerActorSheet extends ActorSheet {
             title: 'Class Selection',
             content: `
             <form class="flexcol">
+                <span class="warning">WARNING!</span> Your character will be overwritten, if you change your class!
                 <div class="form-group">
                     <label for="classSelection">Class</label>
                     <select name="classSelection">
@@ -386,16 +387,173 @@ export class PlayerActorSheet extends ActorSheet {
         const element = event.currentTarget;
         const dataset = element.dataset;
 
-        if (dataset.roll) {
-            if (dataset.type == 'check' || dataset.type == 'save') {
-                Utils.renderRoll(dataset, this.actor);
-            } else {
-                // Render the roll
-                new Roll(dataset.roll, rollingActor.getRollData()).toMessage({
-                    speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-                    flavor: dataset.label ? `${dataset.label}` : ''
-                });
-            }
+        if (dataset.type == 'check') {
+            this.__onRollCheck(dataset);
+        } else if (dataset.type ?? 'save') {
+            this.__onRollSave(dataset);
+        } else if (dataset.roll) {
+            // Render the roll
+            new Roll(dataset.roll, rollingActor.getRollData()).toMessage({
+                speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+                flavor: dataset.label ? `${dataset.label}` : ''
+            });
         }
+    }
+
+    __onRollCheck(dataset) {
+        // Dialog to roll a check and set modifiers
+        new Dialog({
+            title: 'Skill Check',
+            content: `
+            <form class="flexcol">
+                <div class="grid-2col">
+                    <div>
+                        <label for="abilitySelection">Ability</label>
+                        <select name="abilitySelection">
+                            <option value="">None</option>
+                            <option value="cha">Charisma</option>
+                            <option value="con">Constitution</option>
+                            <option value="dex">Dexterity</option>
+                            <option value="int">Intelligence</option>
+                            <option value="str">Strength</option>
+                            <option value="wis">Wisdom</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="skillSelection">Skill</label>
+                        <select name="skillSelection">
+                            <option value="">None</option>
+                            <option value="arcana">Arcana</option>
+                            <option value="climbing">Climbing</option>
+                            <option value="firstAid">First Aid</option>
+                            <option value="literacy">Literacy</option>
+                            <option value="seamanship">Seamanship</option>
+                            <option value="search">Search</option>
+                            <option value="sleightOfHand">Sleight of Hand</option>
+                            <option value="stealth">Stealth</option>
+                            <option value="survival">Survival</option>
+                            <option value="tinkering">Tinkering</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="skill-row">
+                    <label for="mod-value">additional Modifiers: </label>
+                    <button class="minus-btn">-</button>
+                    <span class="mod-value">0</span>
+                    <button class="plus-btn">+</button>
+                <div>
+            </form>
+            `,
+            buttons: {
+                no: {
+                    icon: '<i class="fas fa-times"></i>',
+                    label: 'Cancel'
+                },
+                yes: {
+                    icon: '<i class="fas fa-check"></i>',
+                    label: 'Confirm',
+                    callback: (html) => {
+                        let abilitySelection = html.find('[name="abilitySelection"]').val();
+                        let skillSelection = html.find('[name="skillSelection"]').val();
+                        let additionalModifiers = parseInt(html.find('.mod-value').text().trim());
+
+                        // get abilities and skills
+                        let ability = abilitySelection ? this.actor.system.abilities[abilitySelection] : 0;
+                        let skill = skillSelection ? this.actor.system.skills[skillSelection] : 0;
+
+                        dataset.roll = "1d6";
+
+                        if (abilitySelection && skillSelection) {
+                            dataset.label = ability.label + " and " + skill.label + " check";
+                            dataset.roll +=  "+" + ability.mod + "+" + skill.mod;
+                        } else if (abilitySelection) {
+                            dataset.label = ability.label + " check";
+                            dataset.roll += "+" + ability.mod;
+                        } else if (skillSelection) {
+                            dataset.label = skill.label + " check";
+                            dataset.roll += "+" + skill.mod;
+                        } else {
+                            dataset.label = "straight check";
+                        }
+
+                        if (additionalModifiers) {
+                            dataset.roll += "+" + additionalModifiers;
+                        }
+
+                        Utils.renderRoll(dataset, this.actor);
+                    }
+                },
+            },
+            default: 'yes',
+            render: html => {
+                html.find('.plus-btn').click(ev => {
+                    const modValueElem = $(ev.currentTarget).siblings('.mod-value');
+                    let modValue = parseInt(modValueElem.text()) + 1;
+                    modValueElem.text(modValue);
+                });
+        
+                html.find('.minus-btn').click(ev => {
+                    const modValueElem = $(ev.currentTarget).siblings('.mod-value');
+                    let modValue = parseInt(modValueElem.text()) - 1;
+                    modValueElem.text(modValue);
+                });
+
+                if (dataset.ability) {
+                    html.find('[name="abilitySelection"]').val(dataset.ability);
+                }
+                if (dataset.skill) {
+                    html.find('[name="skillSelection"]').val(dataset.skill);
+                }
+            }
+        }).render(true)
+    }
+
+    // TODO: add auto fail/ success
+    __onRollSave(dataset) {
+        // Dialog to roll a save
+        new Dialog({
+            title: 'Saving Throw',
+            content: `
+            <form class="flexcol">
+                <div>
+                    <label for="abilitySelection">Ability</label>
+                    <select name="abilitySelection">
+                        <option value="">None</option>
+                        <option value="cha">Charisma</option>
+                        <option value="con">Constitution</option>
+                        <option value="dex">Dexterity</option>
+                        <option value="int">Intelligence</option>
+                        <option value="str">Strength</option>
+                        <option value="wis">Wisdom</option>
+                    </select>
+                </div>
+            </form>
+            `,
+            buttons: {
+                no: {
+                    icon: '<i class="fas fa-times"></i>',
+                    label: 'Cancel'
+                },
+                yes: {
+                    icon: '<i class="fas fa-check"></i>',
+                    label: 'Confirm',
+                    callback: (html) => {
+                        let abilitySelection = html.find('[name="abilitySelection"]').val();
+                        let ability = this.actor.system.abilities[abilitySelection];
+                        
+                        dataset.label = ability.label + " save";
+                        dataset.roll = "1d10+" + ability.mod;
+
+                        Utils.renderRoll(dataset, this.actor);
+                    }
+                },
+            },
+            default: 'yes',
+            render: html => {
+                if (dataset.ability) {
+                    html.find('[name="abilitySelection"]').val(dataset.ability);
+                }
+            }
+        }).render(true)
     }
 }

@@ -14,7 +14,6 @@ export class Utils {
             success = roll.total >= 6;
         }
         else if (dataset.type == 'save') {
-            // TODO: add auto fail/ success
             success = roll.total >= 10;
         } else {
             console.warn('Invalid roll type! ' + dataset.type);

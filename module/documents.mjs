@@ -42,4 +42,18 @@ export class SystemActor extends Actor {
 
         this.update(updateData);
     }
+
+    getRollData() {
+        const data = super.getRollData();
+
+        // Copy the ability scores to the top level, so that rolls can use
+        // formulas like `@str.mod + 4`.
+        if (data.abilities) {
+            for (let [k,v] of Object.entries(data.abilities)) {
+                data[k] = foundry.utils.deepClone(v);
+            }
+        }
+
+        return data;
+    }
 }
