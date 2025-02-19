@@ -2,6 +2,8 @@
     "id": "osr",
     "title": "Outcast Silver Raiders",
     "url": "https://github.com/MilasBaumgarten/foundryvtt_osr/",
+    "manifest": "https://raw.githubusercontent.com/MilasBaumgarten/foundryvtt_osr/refs/heads/main/system.json",
+    "download": "https://github.com/MilasBaumgarten/foundryvtt_osr/releases/download/0.1.2/osr.zip",
     "license": "LICENSE.md",
     "description": "An implementation of the Outcast Silver Raiders system.",
     "version": "0.1.2",
@@ -48,6 +50,5 @@
       "distance": 5,
       "units": "ft"
     },
-    "primaryTokenAttribute": "resources.health",
-    "manifest": "https://raw.githubusercontent.com/MilasBaumgarten/foundryvtt_osr/refs/heads/main/system.json"
+    "primaryTokenAttribute": "resources.health"
   }
