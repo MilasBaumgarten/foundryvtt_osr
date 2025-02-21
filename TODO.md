@@ -13,3 +13,9 @@
 - fancy style for character sheets
 - retainers
 - combat action info (could be somewhere separate as a cheat sheet)
+- potency slots + possibility to roll for Sorcerer
+- NPC images
+- ini checks for NPCs in secret
+
+## Bugs
+- player image gets squished on sheet

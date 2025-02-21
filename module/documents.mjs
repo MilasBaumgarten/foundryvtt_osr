@@ -8,7 +8,7 @@ export class SystemActor extends Actor {
         if (!data._id) {
             return;
         } else if (data.type == "pc") {
-            _initializePC();
+            this._initializePC();
         } else if (data.type == "npc") {
             // TODO: roll HP once when creating a token
         }

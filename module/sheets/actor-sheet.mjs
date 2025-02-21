@@ -389,14 +389,15 @@ export class PlayerActorSheet extends ActorSheet {
 
         if (dataset.type == 'check') {
             this._onRollCheck(dataset);
-        } else if (dataset.type ?? 'save') {
+        } else if (dataset.type == 'save') {
             this._onRollSave(dataset);
         } else if (dataset.roll) {
             // Render the roll
-            new Roll(dataset.roll, rollingActor.getRollData()).toMessage({
-                speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-                flavor: dataset.label ? `${dataset.label}` : ''
-            });
+            Utils.renderRoll(dataset, this.actor);
+            // new Roll(dataset.roll, rollingActor.getRollData()).toMessage({
+            //     speaker: ChatMessage.getSpeaker({ actor: this.actor }),
+            //     flavor: dataset.label ? `${dataset.label}` : ''
+            // });
         }
     }
 

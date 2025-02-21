@@ -15,7 +15,9 @@ export class Utils {
         }
         else if (dataset.type == 'save') {
             success = roll.total >= 10;
-        } else {
+        }
+        else if (dataset.type == 'attack') {}
+        else {
             console.warn('Invalid roll type! ' + dataset.type);
         }
 
@@ -24,12 +26,23 @@ export class Utils {
 
         // Construct the chat message content
         let color = success ? "green" : "red";
-        let message = success ? "Success" : "Failure";
-        let customMessage = `
+        let customMessage = '';
+
+        // don't color the message if it is an attack roll
+        if (dataset.type == 'attack') {
+            customMessage = `
             <div>
-                ${dataset.label}: <span style="color:${color}">${message} </span>
+                ${dataset.label}
             </div>
         `;
+        } else {
+            let message = success ? "Success" : "Failure";
+            customMessage = `
+                <div>
+                    ${dataset.label}: <span style="color:${color}">${message} </span>
+                </div>
+            `;
+        }
 
         // Combine the custom message and roll HTML
         let chatContent = `
