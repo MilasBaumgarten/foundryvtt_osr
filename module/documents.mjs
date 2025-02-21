@@ -8,13 +8,13 @@ export class SystemActor extends Actor {
         if (!data._id) {
             return;
         } else if (data.type == "pc") {
-            __initializePC();
+            _initializePC();
         } else if (data.type == "npc") {
             // TODO: roll HP once when creating a token
         }
     }
 
-    __initializePC() {
+    _initializePC() {
         // Loop through ability scores, assign a random value.
         // Afterwards check if the sum of the ability modifiers is greater than 0.
         // If not, a sibling has died and a new character gets rolled.

@@ -50,7 +50,7 @@ export class PlayerActorSheet extends ActorSheet {
 
         if (dataset.type) {
             if (dataset.type == 'select-class') {
-                this.__onSelectClass();
+                this._onSelectClass();
             } else if (dataset.type == 'roll-weapon-damage') {
                 // validate roll data using regex
                 if (Utils.validateRollDate(dataset.roll)) {
@@ -73,7 +73,7 @@ export class PlayerActorSheet extends ActorSheet {
         }
     }
 
-    __onSelectClass() {
+    _onSelectClass() {
         // Dialog to select class and skill improvements
         new Dialog({
             title: 'Class Selection',
@@ -101,12 +101,12 @@ export class PlayerActorSheet extends ActorSheet {
                     callback: (html) => {
                         let characterClass = html.find('[name="classSelection"]').val();
 
-                        this.__selectClass(characterClass);
+                        this._selectClass(characterClass);
 
                         if (characterClass == 'rogue') {
-                            this.__onSelectRogueSkills();
+                            this._onSelectRogueSkills();
                         } else {
-                            this.__onSelectTwoSkills();
+                            this._onSelectTwoSkills();
                         }
                     }
                 },
@@ -115,7 +115,7 @@ export class PlayerActorSheet extends ActorSheet {
         }).render(true)
     }
 
-    __selectClass(className) {
+    _selectClass(className) {
         let updateData = {
             "system.class.value": className,
             "system.level": 1
@@ -141,7 +141,7 @@ export class PlayerActorSheet extends ActorSheet {
         this.actor.update(updateData);
     }
 
-    __onSelectTwoSkills() {
+    _onSelectTwoSkills() {
         // Dialog to select class and skill improvements
         new Dialog({
             title: 'Skill Selection',
@@ -190,7 +190,7 @@ export class PlayerActorSheet extends ActorSheet {
                     icon: '<i class="fas fa-check"></i>',
                     label: 'Random',
                     callback: (html) => {
-                        this.__selectSkillImprovements("random", "random");
+                        this._selectSkillImprovements("random", "random");
                     }
                 },
                 confirm: {
@@ -200,7 +200,7 @@ export class PlayerActorSheet extends ActorSheet {
                         let skillImprovement1 = html.find('[name="skillSelection1"]').val();
                         let skillImprovement2 = html.find('[name="skillSelection2"]').val();
 
-                        this.__selectSkillImprovements(skillImprovement1, skillImprovement2);
+                        this._selectSkillImprovements(skillImprovement1, skillImprovement2);
                     }
                 },
             },
@@ -208,7 +208,7 @@ export class PlayerActorSheet extends ActorSheet {
         }).render(true)
     }
 
-    __selectSkillImprovements(improvement1, improvement2) {
+    _selectSkillImprovements(improvement1, improvement2) {
         let updateData = {};
 
         // set every skill mod to 0
@@ -236,7 +236,7 @@ export class PlayerActorSheet extends ActorSheet {
         this.actor.update(updateData);
     }
 
-    __onSelectRogueSkills() {
+    _onSelectRogueSkills() {
         // Dialog to select class and skill improvements
         new Dialog({
             title: 'Skill Selection',
@@ -328,7 +328,7 @@ export class PlayerActorSheet extends ActorSheet {
                             }
                         });
 
-                        this.__updateSkills(skillUpdates);
+                        this._updateSkills(skillUpdates);
                     }
                 },
             },
@@ -361,7 +361,7 @@ export class PlayerActorSheet extends ActorSheet {
         }).render(true)
     }
 
-    __updateSkills(skillUpdates) {
+    _updateSkills(skillUpdates) {
         let updateData = {};
 
         // set every skill mod to 0
@@ -388,9 +388,9 @@ export class PlayerActorSheet extends ActorSheet {
         const dataset = element.dataset;
 
         if (dataset.type == 'check') {
-            this.__onRollCheck(dataset);
+            this._onRollCheck(dataset);
         } else if (dataset.type ?? 'save') {
-            this.__onRollSave(dataset);
+            this._onRollSave(dataset);
         } else if (dataset.roll) {
             // Render the roll
             new Roll(dataset.roll, rollingActor.getRollData()).toMessage({
@@ -400,7 +400,7 @@ export class PlayerActorSheet extends ActorSheet {
         }
     }
 
-    __onRollCheck(dataset) {
+    _onRollCheck(dataset) {
         // Dialog to roll a check and set modifiers
         new Dialog({
             title: 'Skill Check',
@@ -509,7 +509,7 @@ export class PlayerActorSheet extends ActorSheet {
     }
 
     // TODO: add auto fail/ success
-    __onRollSave(dataset) {
+    _onRollSave(dataset) {
         // Dialog to roll a save
         new Dialog({
             title: 'Saving Throw',
