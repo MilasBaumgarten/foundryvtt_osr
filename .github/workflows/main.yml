@@ -1,0 +1,49 @@
+name: Create and Upload Release Zip
+
+on:
+  push:
+    branches:
+      - main  # Change if your default branch is different
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Extract version and description from commit message
+        id: extract_info
+        run: |
+          COMMIT_MSG=$(git log -1 --pretty=%B)
+          VERSION=$(echo "$COMMIT_MSG" | awk -F': ' '{print $1}')
+          DESCRIPTION=$(echo "$COMMIT_MSG" | awk -F': ' '{print $2}')
+          echo "version=$VERSION" >> $GITHUB_ENV
+          echo "description=$DESCRIPTION" >> $GITHUB_ENV
+
+      - name: Verify version in system.json
+        run: |
+          FILE_VERSION=$(jq -r .version system.json)
+          if [ "$VERSION" != "$FILE_VERSION" ]; then
+            echo "Version mismatch: Commit message version ($VERSION) does not match system.json version ($FILE_VERSION)" >&2
+            exit 1
+          fi
+
+      - name: Create zip file
+        run: |
+          ZIP_NAME="release-$VERSION.zip"
+          zip -r "$ZIP_NAME" . -x "*.git*"
+          echo "zip_name=$ZIP_NAME" >> $GITHUB_ENV
+
+      - name: Create or update release
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: latest
+          name: ${{ env.version }}
+          body: ${{ env.description }}
+          draft: false
+          prerelease: false
+          files: ${{ env.zip_name }}
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
