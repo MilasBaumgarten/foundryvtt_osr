@@ -115,16 +115,22 @@ export class PlayerActorSheet extends ActorSheet {
         }).render(true)
     }
 
-    _selectClass(className) {
+    async _selectClass(className) {
+        // roll health
+        const rollFormular = OSR.classes[className].hitDie + "+@con.mod";
+        const hp = await Utils.getRollResult(rollFormular, this.actor);
+
         let updateData = {
             "system.class.value": className,
-            "system.level": 1
+            "system.level": 1,
+            "system.resources.hitDie.value": OSR.classes[className].hitDie,
+            "system.resources.health.value": hp,
+            "system.resources.health.max": hp,
+            "system.resources.health.initialized": 1
         };
-
-        // TODO: set HP
         
         // add class specific starting equipment
-        let equipment = OSR.classes[className].equipment;
+        const equipment = OSR.classes[className].equipment;
         
         for (const index in equipment.weapons) {
             updateData[`system.equipment.weapons.slot${Number(index) + 1}`] = equipment.weapons[index];
@@ -394,10 +400,6 @@ export class PlayerActorSheet extends ActorSheet {
         } else if (dataset.roll) {
             // Render the roll
             Utils.renderRoll(dataset, this.actor);
-            // new Roll(dataset.roll, rollingActor.getRollData()).toMessage({
-            //     speaker: ChatMessage.getSpeaker({ actor: this.actor }),
-            //     flavor: dataset.label ? `${dataset.label}` : ''
-            // });
         }
     }
 

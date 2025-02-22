@@ -11,8 +11,8 @@ class ActorDataModel extends foundry.abstract.TypeDataModel {
 
         schema.resources = new SchemaField({
             health: new SchemaField({
-                    value: new NumberField({ required: true, initial: 10 }),
-                    max: new NumberField({ required: true, initial: 10 })
+                    value: new NumberField({ required: true}),
+                    max: new NumberField({ required: true}),
             }),
             hitDie: new SchemaField({
                     value: new StringField({ required: true, blank: true })

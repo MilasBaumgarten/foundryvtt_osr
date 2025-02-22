@@ -126,6 +126,18 @@
         {{!-- Items Tab --}}
         <div class="tab items" data-group="primary" data-tab="items">
             <div>
+                {{!-- Non-encumbering Items --}}
+                <div class="grid-2col-equal">
+                    <div>
+                        <div><b>Non-encumbering items</b></div>
+                        {{editor system.equipment.nonencumberingItems.value target="system.equipment.nonencumberingItems.value" engine="prosemirror" button=true editable=editable}}
+                    </div>
+                    <div>
+                        <div><b>Wealth and treasure</b> (100 coins fit in each pouch)</div>
+                        {{editor system.equipment.treasure.value target="system.equipment.treasure.value" engine="prosemirror" button=true editable=editable}}
+                    </div>
+                </div>
+                {{!-- Items --}}
                 <div class="grid-items">
                     <div></div>
                     <div><b>Item</b></div>
@@ -137,17 +149,6 @@
                         <input type="text" name="system.equipment.items.{{key}}.scarcityDie" value="{{slot.scarcityDie}}"/>
                         <button class="clickable dice-icon" data-type="roll-scarcity" data-roll="{{slot.scarcityDie}}" data-label="{{slot.description}} scarcity"></button>
                     {{/each}}
-                </div>
-                {{!-- Other Items --}}
-                <div class="grid-2col-equal">
-                    <div>
-                        <div><b>Non-encumbering items</b></div>
-                        {{editor system.equipment.nonencumberingItems.value target="system.equipment.nonencumberingItems.value" engine="prosemirror" button=true editable=editable}}
-                    </div>
-                    <div>
-                        <div><b>Wealth and treasure</b> (100 coins fit in each pouch)</div>
-                        {{editor system.equipment.treasure.value target="system.equipment.treasure.value" engine="prosemirror" button=true editable=editable}}
-                    </div>
                 </div>
             </div>
         </div>

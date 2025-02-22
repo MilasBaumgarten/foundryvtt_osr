@@ -4,6 +4,12 @@ export class Utils {
         return rollRegex.test(rollData);
     }
 
+    static async getRollResult(rollFormular, rollingActor) {
+        let roll = new Roll(rollFormular, rollingActor.getRollData());
+        await roll.evaluate();
+        return roll.total;
+    }
+
     static async renderRoll(dataset, rollingActor) {
         let roll = new Roll(dataset.roll, rollingActor.getRollData());
         await roll.evaluate();

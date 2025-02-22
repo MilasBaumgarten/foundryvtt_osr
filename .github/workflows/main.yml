@@ -5,6 +5,9 @@ on:
     branches:
       - main  # Change if your default branch is different
 
+permissions:
+  contents: write  # Grants permission to create/update releases
+
 jobs:
   release:
     runs-on: ubuntu-latest
@@ -17,22 +20,28 @@ jobs:
         id: extract_info
         run: |
           COMMIT_MSG=$(git log -1 --pretty=%B)
-          VERSION=$(echo "$COMMIT_MSG" | awk -F': ' '{print $1}')
-          DESCRIPTION=$(echo "$COMMIT_MSG" | awk -F': ' '{print $2}')
-          echo "version=$VERSION" >> $GITHUB_ENV
-          echo "description=$DESCRIPTION" >> $GITHUB_ENV
+          VERSION=$(echo "$COMMIT_MSG" | grep -oP '^\d+\.\d+\.\d+')
+          DESCRIPTION=$(echo "$COMMIT_MSG" | sed -E 's/^[0-9]+\.[0-9]+\.[0-9]+: //')
+
+          echo "Extracted version: '$VERSION'"
+          echo "Extracted description: '$DESCRIPTION'"
+
+           echo "::set-output name=version::$VERSION"
+          echo "::set-output name=description::$DESCRIPTION"
 
       - name: Verify version in system.json
         run: |
           FILE_VERSION=$(jq -r .version system.json)
-          if [ "$VERSION" != "$FILE_VERSION" ]; then
-            echo "Version mismatch: Commit message version ($VERSION) does not match system.json version ($FILE_VERSION)" >&2
+          echo "system.json version: $FILE_VERSION"
+          echo "commit version: ${{ steps.extract_info.outputs.version }}"
+          if [ "${{ steps.extract_info.outputs.version }}" != "$FILE_VERSION" ]; then
+            echo "Version mismatch: Commit message version (${{ steps.extract_info.outputs.version }}) does not match system.json version ($FILE_VERSION)" >&2
             exit 1
           fi
 
       - name: Create zip file
         run: |
-          ZIP_NAME="release-$VERSION.zip"
+          ZIP_NAME="release-${{ steps.extract_info.outputs.version }}.zip"
           zip -r "$ZIP_NAME" . -x "*.git*"
           echo "zip_name=$ZIP_NAME" >> $GITHUB_ENV
 
@@ -40,8 +49,8 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: latest
-          name: ${{ env.version }}
-          body: ${{ env.description }}
+          name: ${{ steps.extract_info.outputs.version }}
+          body: ${{ steps.extract_info.outputs.description }}
           draft: false
           prerelease: false
           files: ${{ env.zip_name }}

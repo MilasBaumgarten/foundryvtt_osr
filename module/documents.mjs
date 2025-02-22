@@ -9,9 +9,7 @@ export class SystemActor extends Actor {
             return;
         } else if (data.type == "pc") {
             this._initializePC();
-        } else if (data.type == "npc") {
-            // TODO: roll HP once when creating a token
-        }
+        } else if (data.type == "npc") {}
     }
 
     _initializePC() {
@@ -46,7 +44,7 @@ export class SystemActor extends Actor {
         }
         updateData["system.equipment.treasure.value"] = `${Math.ceil(Math.random() * 6)} gold pieces (each worth 50 silver pieces)`
         
-        // link tokens to thsi actor
+        // link tokens to this actor
         updateData["prototypeToken.actorLink"] = true;
         
         this.update(updateData);
